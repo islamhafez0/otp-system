@@ -1,7 +1,5 @@
-// controllers/otpController.js
 const OTP = require("../models/Otp");
 
-// Generate a new OTP
 exports.generateOTP = async (req, res) => {
   try {
     const code = await OTP.generateOTP();
@@ -24,7 +22,6 @@ exports.generateOTP = async (req, res) => {
   }
 };
 
-// Validate an OTP
 exports.validateOTP = async (req, res) => {
   try {
     const { code } = req.body;
@@ -52,10 +49,9 @@ exports.validateOTP = async (req, res) => {
       });
     }
 
-    // Mark as used
     otp.isUsed = true;
     otp.usedAt = new Date();
-    otp.usedBy = req.ip; // Or user ID if authenticated
+    otp.usedBy = req.ip;
     await otp.save();
 
     res.json({
@@ -74,7 +70,6 @@ exports.validateOTP = async (req, res) => {
   }
 };
 
-// List all OTPs (with pagination)
 exports.listOTPs = async (req, res) => {
   try {
     const page = parseInt(req.query.page) || 1;
@@ -107,7 +102,6 @@ exports.listOTPs = async (req, res) => {
   }
 };
 
-// Delete an OTP
 exports.deleteOTP = async (req, res) => {
   try {
     const { id } = req.params;

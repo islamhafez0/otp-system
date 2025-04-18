@@ -1,4 +1,3 @@
-// models/Otp.js
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 
@@ -17,13 +16,12 @@ const otpSchema = new Schema({
   createdAt: {
     type: Date,
     default: Date.now,
-    index: { expires: "24h" }, // Optional TTL (auto-delete after 24 hours)
+    index: { expires: "24h" },
   },
   usedAt: {
     type: Date,
     default: Date.now,
   },
-  // Optional: Add metadata if needed
   generatedBy: {
     type: String,
     default: "system",
@@ -34,7 +32,6 @@ const otpSchema = new Schema({
   },
 });
 
-// Pre-save hook to format code
 otpSchema.pre("save", function (next) {
   if (this.isModified("code")) {
     this.code = this.code.toUpperCase().replace(/\s/g, "");
@@ -42,13 +39,11 @@ otpSchema.pre("save", function (next) {
   next();
 });
 
-// Static method to generate a new OTP
 otpSchema.statics.generateOTP = async function (length = 6) {
-  const chars = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789"; // Excluding confusing characters
+  const chars = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789";
   let code;
   let exists;
 
-  // Ensure unique code
   do {
     code = "";
     for (let i = 0; i < length; i++) {
